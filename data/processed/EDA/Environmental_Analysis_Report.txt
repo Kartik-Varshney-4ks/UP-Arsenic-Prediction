@@ -1,0 +1,30 @@
+UP ARSENIC PREDICTION PROJECT
+ENVIRONMENTAL ANALYSIS REPORT
+============================================================
+
+Environmental variables analyzed:
+
+- rainfall_mean_annual_mm
+- rainfall_mean_monsoon_mm
+- rainfall_mean_premonsoon_mm
+- rainfall_mean_postmonsoon_mm
+- rainfall_mean_winter_mm
+- soil_moisture_mean_2020
+- soil_moisture_median_2020
+- soil_moisture_std_2020
+- soil_moisture_volume_mean_2020
+- soil_moisture_pct_mean_2020
+
+
+Correlations with arsenic:
+
+rainfall_mean_premonsoon_mm: 0.139720
+rainfall_mean_postmonsoon_mm: 0.139720
+rainfall_mean_monsoon_mm: 0.139720
+rainfall_mean_annual_mm: 0.139720
+soil_moisture_std_2020: 0.129918
+soil_moisture_pct_mean_2020: 0.126031
+soil_moisture_mean_2020: 0.125976
+soil_moisture_volume_mean_2020: 0.118317
+soil_moisture_median_2020: 0.066161
+rainfall_mean_winter_mm: -0.139720

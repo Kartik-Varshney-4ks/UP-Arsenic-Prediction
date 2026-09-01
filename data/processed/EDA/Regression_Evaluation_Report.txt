@@ -1,0 +1,11 @@
+UP ARSENIC PREDICTION PROJECT
+REGRESSION MODEL EVALUATION REPORT
+============================================================
+
+Dataset rows: 411
+Training rows: 328
+Testing rows: 83
+
+MAE : 0.242907
+RMSE: 0.805741
+R2  : 0.998201
