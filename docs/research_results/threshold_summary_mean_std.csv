@@ -1,0 +1,6 @@
+,Precision,Precision,Recall,Recall,F1_Score,F1_Score,Balanced_Accuracy,Balanced_Accuracy
+,mean,std,mean,std,mean,std,mean,std
+Threshold,,,,,,,,
+0.2,0.5952,0.0731,0.7982,0.0653,0.6814,0.0703,0.7721,0.0431
+0.35,0.6863,0.0547,0.7063,0.0756,0.6957,0.0625,0.7775,0.0375
+0.5,0.7338,0.0518,0.6033,0.0915,0.6609,0.0724,0.75,0.0433

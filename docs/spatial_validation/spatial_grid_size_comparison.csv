@@ -1,0 +1,5 @@
+Grid_km,Observations,Unique_cells,Singleton_cells,Cells_with_multiple_samples,Largest_cell_size,Median_cell_size
+10,1284,1032,890,142,12,1.0
+25,1284,409,76,333,31,3.0
+50,1284,125,6,119,42,10.0
+100,1284,42,2,40,81,33.0

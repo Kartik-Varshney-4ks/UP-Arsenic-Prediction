@@ -554,3 +554,148 @@ st.caption(
     "UP Arsenic Prediction Project | "
     "Research / Educational Use"
 )
+
+# ============================================================
+# RESEARCH EVALUATION DASHBOARD
+# ============================================================
+
+st.divider()
+st.header("📊 Research Evaluation Dashboard")
+st.caption(
+    "Nested spatial validation results for the groundwater arsenic "
+    "classification research."
+)
+
+RESEARCH_DIR = BASE_DIR / "docs" / "research_results"
+SPATIAL_DIR = BASE_DIR / "docs" / "nested_spatial_validation"
+
+summary_path = RESEARCH_DIR / "final_nested_spatial_summary.csv"
+fold_path = RESEARCH_DIR / "final_nested_spatial_fold_results.csv"
+analysis_path = RESEARCH_DIR / "final_nested_spatial_fold_analysis.csv"
+map_path = SPATIAL_DIR / "fold4_geographic_error_map.png"
+
+
+def _find_column(dataframe, possible_names):
+    """Return the first matching column, ignoring case and spaces."""
+    normalized = {
+        str(column).strip().lower().replace(" ", "_"): column
+        for column in dataframe.columns
+    }
+    for name in possible_names:
+        key = name.strip().lower().replace(" ", "_")
+        if key in normalized:
+            return normalized[key]
+    return None
+
+
+if summary_path.exists():
+    summary_df = pd.read_csv(summary_path)
+    st.subheader("Overall Spatial Validation Performance")
+    st.dataframe(summary_df, use_container_width=True, hide_index=True)
+
+    metric_col = _find_column(summary_df, ["Metric", "Metrics"])
+    mean_col = _find_column(summary_df, ["Mean", "Mean_Score"])
+    std_col = _find_column(summary_df, ["Std", "Standard_Deviation"])
+
+    if metric_col and mean_col:
+        metrics = summary_df.set_index(metric_col)[mean_col].to_dict()
+        metric_display = [
+            ("Accuracy", "Accuracy"),
+            ("Balanced_Accuracy", "Balanced accuracy"),
+            ("Precision", "Precision"),
+            ("Recall", "Recall"),
+            ("F1_Score", "F1 score"),
+            ("ROC_AUC", "ROC-AUC"),
+            ("PR_AUC_AP", "PR-AUC"),
+        ]
+        cards = []
+        for key, label in metric_display:
+            for actual_key, value in metrics.items():
+                if str(actual_key).strip().lower().replace(" ", "_") == key.lower():
+                    try:
+                        cards.append((label, float(value)))
+                    except (TypeError, ValueError):
+                        pass
+                    break
+
+        for start in range(0, len(cards), 4):
+            columns = st.columns(min(4, len(cards) - start))
+            for column, (label, value) in zip(columns, cards[start:start + 4]):
+                column.metric(label, f"{value:.3f}")
+
+    st.info(
+        "These are mean outer-fold results from nested spatially grouped "
+        "cross-validation, not results from an independent external test set."
+    )
+else:
+    st.warning(f"Research summary file not found: {summary_path}")
+
+
+if fold_path.exists():
+    folds_df = pd.read_csv(fold_path)
+    st.subheader("Performance Across Spatial Folds")
+    st.dataframe(folds_df, use_container_width=True, hide_index=True)
+
+    fold_col = _find_column(folds_df, ["Outer_Fold", "Fold"])
+    chart_candidates = [
+        column for column in ["Accuracy", "Precision", "Recall", "F1_Score"]
+        if column in folds_df.columns
+    ]
+    if fold_col and chart_candidates:
+        chart_df = folds_df.set_index(fold_col)[chart_candidates]
+        st.markdown("**Comparison of selected metrics across folds**")
+        st.bar_chart(chart_df)
+
+    st.download_button(
+        "⬇️ Download fold results CSV",
+        data=folds_df.to_csv(index=False).encode("utf-8"),
+        file_name="nested_spatial_fold_results.csv",
+        mime="text/csv",
+        key="download_nested_fold_results",
+    )
+else:
+    st.warning(f"Fold results file not found: {fold_path}")
+
+
+if analysis_path.exists():
+    analysis_df = pd.read_csv(analysis_path)
+    with st.expander("🔎 Fold-level geography and error analysis"):
+        st.dataframe(analysis_df, use_container_width=True, hide_index=True)
+        st.download_button(
+            "⬇️ Download fold analysis CSV",
+            data=analysis_df.to_csv(index=False).encode("utf-8"),
+            file_name="nested_spatial_fold_analysis.csv",
+            mime="text/csv",
+            key="download_nested_fold_analysis",
+        )
+else:
+    st.caption("Optional fold-level analysis file was not found.")
+
+
+st.subheader("🗺️ Geographic Prediction-Error Map")
+if map_path.exists():
+    st.image(
+        str(map_path),
+        caption=(
+            "Prediction outcomes for spatial validation Fold 4. "
+            "This is not a confirmed statewide arsenic-contamination map."
+        ),
+        use_container_width=True,
+    )
+else:
+    st.warning(f"Geographic error map not found: {map_path}")
+
+
+st.subheader("⚠️ Research Interpretation and Limitations")
+st.markdown(
+    """
+    - Spatially grouped validation evaluates performance across groups of nearby observations.
+    - The validation did not enforce a geographic buffer between training and test observations.
+    - Performance varies between folds and may differ in other locations.
+    - Predictions estimate detection risk; they do not measure arsenic concentration.
+    - Laboratory testing is required to determine arsenic concentration in a specific water sample.
+    - These research metrics describe the evaluated validation pipeline. They should not be assumed to
+      validate the live prediction pipeline until the model and feature configurations are confirmed to match.
+    """
+)
+

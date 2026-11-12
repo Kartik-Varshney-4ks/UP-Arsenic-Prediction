@@ -1,0 +1,5 @@
+,Accuracy,Accuracy,Balanced_Accuracy,Balanced_Accuracy,Precision,Precision,Recall,Recall,F1_Score,F1_Score,ROC_AUC,ROC_AUC,PR_AUC_Average_Precision,PR_AUC_Average_Precision
+,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std
+Grid_km,,,,,,,,,,,,,,
+25,0.8154,0.0189,0.7679,0.0157,0.7429,0.0538,0.638,0.027,0.686,0.0339,0.8591,0.0257,0.7449,0.047
+50,0.8201,0.0177,0.77,0.0325,0.7578,0.0614,0.6353,0.0701,0.6895,0.0568,0.8606,0.0301,0.7511,0.0365

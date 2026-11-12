@@ -1,0 +1,3 @@
+Model,MAE,RMSE,R2,Train_Samples,Test_Samples,Evaluation_Note
+LSTM,1.1343774853818043,1.460531005369576,0.16639265488984922,56,15,Exploratory district-level 2023-to-2024 prediction; not validated long-term forecasting.
+Training_Mean_Baseline,1.8309528782610933,1.9503400187793394,-0.48648535505282675,56,15,Exploratory district-level 2023-to-2024 prediction; not validated long-term forecasting.
